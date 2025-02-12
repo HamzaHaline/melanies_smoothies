@@ -35,14 +35,15 @@ ingredients_list = st.multiselect(
 if ingredients_list:
     ingredients_string = ''
 
+    # Loop through the selected ingredients and get the SEARCH_ON value
     for fruit_chosen in ingredients_list:
         ingredients_string += fruit_chosen + ' '
-        
-        search_on=pd_df.loc[pd_df['FRUIT_NAME'] == fruit_chosen, 'SEARCH_ON'].iloc[0]
-        #st.write('The search value for ', fruit_chosen,' is ', search_on, '.')
-        
-        st.subheader(fruit_chosen + 'Nutrition Information')
-        fruityvice_response = requests.get("https://my.fruityvice.com/api" + fruit_chosen)
+        search_on = my_dataframe.loc[my_dataframe['FRUIT_NAME'] == fruit_chosen, 'SEARCH_ON'].iloc[0]
+        st.write('The search value for ', fruit_chosen, ' is ', search_on, '.')
+
+        # Fetch and display nutrition information for the chosen fruit
+        st.subheader(fruit_chosen + ' Nutrition Information')
+        fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + search_on)
         fv_df = st.dataframe(data=fruityvice_response.json(), use_container_width=True)
     
     #st.write(ingredients_string)
